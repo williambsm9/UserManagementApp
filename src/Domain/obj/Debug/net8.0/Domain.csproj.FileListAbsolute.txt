@@ -9,3 +9,4 @@
 /Users/williambisimwa/Documents/Repos/Porcupine/src/Domain/obj/Debug/net8.0/refint/Domain.dll
 /Users/williambisimwa/Documents/Repos/Porcupine/src/Domain/obj/Debug/net8.0/Domain.pdb
 /Users/williambisimwa/Documents/Repos/Porcupine/src/Domain/obj/Debug/net8.0/ref/Domain.dll
+/Users/williambisimwa/Documents/Repos/Porcupine/src/Domain/obj/Debug/net8.0/Domain.sourcelink.json
