@@ -1,0 +1,11 @@
+/Users/williambisimwa/Documents/Repos/Porcupine/src/Domain/bin/Debug/net8.0/Domain.deps.json
+/Users/williambisimwa/Documents/Repos/Porcupine/src/Domain/bin/Debug/net8.0/Domain.dll
+/Users/williambisimwa/Documents/Repos/Porcupine/src/Domain/bin/Debug/net8.0/Domain.pdb
+/Users/williambisimwa/Documents/Repos/Porcupine/src/Domain/obj/Debug/net8.0/Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/williambisimwa/Documents/Repos/Porcupine/src/Domain/obj/Debug/net8.0/Domain.AssemblyInfoInputs.cache
+/Users/williambisimwa/Documents/Repos/Porcupine/src/Domain/obj/Debug/net8.0/Domain.AssemblyInfo.cs
+/Users/williambisimwa/Documents/Repos/Porcupine/src/Domain/obj/Debug/net8.0/Domain.csproj.CoreCompileInputs.cache
+/Users/williambisimwa/Documents/Repos/Porcupine/src/Domain/obj/Debug/net8.0/Domain.dll
+/Users/williambisimwa/Documents/Repos/Porcupine/src/Domain/obj/Debug/net8.0/refint/Domain.dll
+/Users/williambisimwa/Documents/Repos/Porcupine/src/Domain/obj/Debug/net8.0/Domain.pdb
+/Users/williambisimwa/Documents/Repos/Porcupine/src/Domain/obj/Debug/net8.0/ref/Domain.dll
