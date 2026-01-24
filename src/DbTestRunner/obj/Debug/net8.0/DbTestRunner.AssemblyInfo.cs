@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DbTestRunner")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ee5b9493b66666b635de16aa52a136f35d23f9b8")]
 [assembly: System.Reflection.AssemblyProductAttribute("DbTestRunner")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DbTestRunner")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
