@@ -1,4 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.DTOs.Group;
+using Application.DTOs.User;
+using Application.Interfaces;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,12 +15,17 @@ public class UserService : IUserService
         _context = context;
     }
 
-    public async Task<Guid> CreateUserAsync(string name, string email)
+    public async Task<Guid> CreateUserAsync(CreateUserDto dto)
     {
+        var groups = await _context.Groups
+            .Where(g => dto.GroupIds.Contains(g.Id))
+            .ToListAsync();
+
         var user = new Domain.Entities.User
         {
-            Name = name,
-            Email = email
+            Name = dto.Name,
+            Email = dto.Email,
+            Groups = groups
         };
 
         _context.Users.Add(user);
@@ -27,13 +34,26 @@ public class UserService : IUserService
         return user.Id;
     }
 
-    public async Task UpdateUserAsync(Guid id, string name, string email)
+    public async Task UpdateUserAsync(Guid id, UpdateUserDto dto)
     {
-        var user = await _context.Users.FindAsync(id)
+        var user = await _context.Users
+            .Include(u => u.Groups)
+            .FirstOrDefaultAsync(u => u.Id == id)
             ?? throw new KeyNotFoundException("User not found");
 
-        user.Name = name;
-        user.Email = email;
+        user.Name = dto.Name;
+        user.Email = dto.Email;
+
+        user.Groups.Clear();
+
+        var groups = await _context.Groups
+            .Where(g => dto.GroupIds.Contains(g.Id))
+            .ToListAsync();
+
+        foreach (var group in groups)
+        {
+            user.Groups.Add(group);
+        }
 
         await _context.SaveChangesAsync();
     }
@@ -48,18 +68,39 @@ public class UserService : IUserService
     }
 
     public async Task<int> GetTotalUserCountAsync()
-    {
-        return await _context.Users.CountAsync();
-    }
+        => await _context.Users.CountAsync();
 
     public async Task<Dictionary<string, int>> GetUserCountPerGroupAsync()
     {
         return await _context.Groups
-            .Select(g => new
-            {
-                g.Name,
-                Count = g.Users.Count
-            })
+            .Select(g => new { g.Name, Count = g.Users.Count })
             .ToDictionaryAsync(x => x.Name, x => x.Count);
+    }
+
+    public async Task<List<UserWithGroupsDto>> GetUsersWithGroupsAsync()
+    {
+        return await _context.Users
+            .Include(u => u.Groups)
+            .Select(u => new UserWithGroupsDto
+            {
+                Id = u.Id,
+                Name = u.Name,
+                Email = u.Email,
+                Groups = u.Groups.Select(g => g.Name).ToList()
+            })
+            .ToListAsync();
+    }
+
+    public async Task<List<GroupWithUsersDto>> GetGroupsWithUsersAsync()
+    {
+        return await _context.Groups
+            .Include(g => g.Users)
+            .Select(g => new GroupWithUsersDto
+            {
+                Id = g.Id,
+                Name = g.Name,
+                Users = g.Users.Select(u => u.Name).ToList()
+            })
+            .ToListAsync();
     }
 }

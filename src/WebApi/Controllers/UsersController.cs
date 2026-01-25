@@ -1,3 +1,4 @@
+using Application.DTOs.User;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,16 +16,16 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(string name, string email)
+    public async Task<IActionResult> Create([FromBody] CreateUserDto dto)
     {
-        var id = await _userService.CreateUserAsync(name, email);
-        return Ok(id);
+        var id = await _userService.CreateUserAsync(dto);
+        return CreatedAtAction(nameof(GetAll), new { id }, id);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, string name, string email)
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserDto dto)
     {
-        await _userService.UpdateUserAsync(id, name, email);
+        await _userService.UpdateUserAsync(id, dto);
         return NoContent();
     }
 
@@ -33,6 +34,12 @@ public class UsersController : ControllerBase
     {
         await _userService.DeleteUserAsync(id);
         return NoContent();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        return Ok(await _userService.GetUsersWithGroupsAsync());
     }
 
     [HttpGet("count")]
