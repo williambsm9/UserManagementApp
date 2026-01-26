@@ -14,7 +14,7 @@ public class GroupsController : ControllerBase
         _userService = userService;
     }
 
-    [HttpGet]
+    [HttpGet("with-users")]
     public async Task<IActionResult> GetGroupsWithUsers()
     {
         return Ok(await _userService.GetGroupsWithUsersAsync());

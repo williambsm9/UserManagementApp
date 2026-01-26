@@ -53,4 +53,5 @@ public class UsersController : ControllerBase
     {
         return Ok(await _userService.GetUserCountPerGroupAsync());
     }
+    
 }
