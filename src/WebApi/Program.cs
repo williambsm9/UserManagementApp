@@ -7,6 +7,7 @@ using FluentValidation.AspNetCore;
 using Application.Services;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Diagnostics;
+using Application.DTOs.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +33,7 @@ builder.Services.AddFluentValidationAutoValidation();
 
 
 
-builder.Services.AddValidatorsFromAssemblyContaining<CreateUserDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateUserDto>();
 builder.Services.AddFluentValidationAutoValidation();
 
 var app = builder.Build();
