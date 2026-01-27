@@ -64,6 +64,6 @@ public async Task UpdateUser_ReturnsNoContent_WhenUserExists()
                 request
             );
 
-        Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 }
