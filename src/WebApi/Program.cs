@@ -2,13 +2,11 @@ using Infrastructure.Persistence;
 using Application.Interfaces;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Application.Common.Exceptions;
-using System.Net;
-using System.Text.Json;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Application.Services;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,33 +46,35 @@ using (var scope = app.Services.CreateScope())
 
 app.UseExceptionHandler(errorApp =>
 {
-errorApp.Run(async context =>
-{
-var exception = context.Features
-.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>()
-?.Error;
+    errorApp.Run(async context =>
+    {
+        var exceptionHandler =
+            context.Features.Get<IExceptionHandlerFeature>();
 
+        var exception = exceptionHandler?.Error;
 
-context.Response.ContentType = "application/json";
+        context.Response.ContentType = "application/json";
 
+        switch (exception)
+        {
+            case Application.Common.Exceptions.NotFoundException:
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
+                break;
 
-switch (exception)
-{
-case NotFoundException:
-context.Response.StatusCode = StatusCodes.Status404NotFound;
-break;
+            case FluentValidation.ValidationException:
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                break;
 
+            default:
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                break;
+        }
 
-case ValidationException:
-context.Response.StatusCode = StatusCodes.Status400BadRequest;
-break;
-
-
-default:
-context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-break;
-}
-});
+        await context.Response.WriteAsJsonAsync(new
+        {
+            error = exception?.Message
+        });
+    });
 });
 
 app.UseSwagger();

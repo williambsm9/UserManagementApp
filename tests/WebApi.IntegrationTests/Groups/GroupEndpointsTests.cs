@@ -22,6 +22,7 @@ public class GroupEndpointsTests : IClassFixture<CustomWebApplicationFactory>
 
         var groups = await response.Content.ReadFromJsonAsync<List<GroupWithUsersDto>>();
 
+        Assert.NotNull(groups);
         Assert.NotEmpty(groups);
     }
 

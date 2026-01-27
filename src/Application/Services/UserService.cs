@@ -1,5 +1,4 @@
 using Application.Common.Exceptions;
-using Application.DTOs.Group;
 using Application.DTOs.User;
 using Application.Interfaces;
 using Domain.Entities;
@@ -35,8 +34,12 @@ public class UserService : IUserService
 
     public async Task UpdateUserAsync(Guid id, UpdateUserDto dto)
     {
-        var user = await _users.GetByIdAsync(id)
-            ?? throw new NotFoundException("User not found");
+        var user = await _users.GetByIdAsync(id);
+
+        if (user is null)
+        {
+            throw new NotFoundException($"User with id '{id}' not found");
+        }
 
         user.Update(dto.Name, dto.Email);
 
@@ -65,10 +68,10 @@ public class UserService : IUserService
 
         return users.Select(u => new UserWithGroupsDto
         {
-        Id = u.Id,
-        Name = u.Name,
-        Email = u.Email,
-        Groups = u.Groups.Select(g => g.Name).ToList()
+            Id = u.Id,
+            Name = u.Name,
+            Email = u.Email,
+            Groups = u.Groups.Select(g => g.Name).ToList()
         }).ToList();
     }
 
