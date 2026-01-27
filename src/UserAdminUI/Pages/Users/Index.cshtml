@@ -1,0 +1,24 @@
+@page
+@model UserAdminUI.Pages.Users.IndexModel
+
+<h1>Users</h1>
+<a asp-page="./Create">Add User</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Groups</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var user in Model.Users)
+    {
+        <tr>
+            <td>@user.Name</td>
+            <td>@user.Email</td>
+            <td>@string.Join(", ", user.GroupNames)</td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -19,7 +19,6 @@ public class GetUsersTests : IClassFixture<CustomWebApplicationFactory>
         // Act
         var response = await _client.GetAsync("/api/users");
 
-        Console.WriteLine($"Response status: {response.StatusCode}");
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 

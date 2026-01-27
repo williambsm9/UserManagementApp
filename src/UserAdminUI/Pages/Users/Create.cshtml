@@ -1,0 +1,13 @@
+@page
+@model Users.CreateModel
+<h2>Add User</h2>
+
+<form method="post">
+    <label>Name</label>
+    <input asp-for="User.Name" />
+    <label>Email</label>
+    <input asp-for="User.Email" type="email" />
+    <label>Group IDs (comma-separated)</label>
+    <input asp-for="GroupIds" />
+    <button type="submit">Add</button>
+</form>
