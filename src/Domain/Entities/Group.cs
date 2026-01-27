@@ -2,10 +2,21 @@ using Domain.Common;
 
 namespace Domain.Entities;
 
-public class Group : BaseEntity
+public class Group
 {
-    public string Name { get; set; } = null!;
+    private readonly List<Permission> _permissions = new();
 
-    public ICollection<User> Users { get; set; } = new List<User>();
-    public ICollection<Permission> Permissions { get; set; } = new List<Permission>();
+    public Guid Id { get; private set; }
+    public string Name { get; private set; } = default!;
+
+    public List<User> Users { get; private set; } = new();
+    public IReadOnlyCollection<Permission> Permissions => _permissions;
+
+    private Group() { }
+
+    public Group(Guid id, string name)
+    {
+        Id = id;
+        Name = name;
+    }
 }

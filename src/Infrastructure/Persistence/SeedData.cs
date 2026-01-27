@@ -16,17 +16,17 @@ public static class SeedData
     public static readonly Guid WritePermissionId =
         Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb");
 
-    public static IEnumerable<Group> Groups =>
-        new[]
-        {
-            new Group { Id = AdminGroupId, Name = "Admin" },
-            new Group { Id = Level1GroupId, Name = "Level1" }
-        };
+public static IEnumerable<Group> Groups =>
+    new[]
+    {
+        new Group(AdminGroupId, "Admin"),
+        new Group(Level1GroupId, "Level1")
+    };
 
-    public static IEnumerable<Permission> Permissions =>
-        new[]
-        {
-            new Permission { Id = ReadPermissionId, Name = "Read" },
-            new Permission { Id = WritePermissionId, Name = "Write" }
-        };
+public static IEnumerable<Permission> Permissions =>
+    new[]
+    {
+        new Permission(ReadPermissionId, "Read"),
+        new Permission(WritePermissionId, "Write")
+    };
 }

@@ -16,17 +16,24 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateUserDto dto)
+    public async Task<IActionResult> Create(CreateUserDto dto)
     {
         var id = await _userService.CreateUserAsync(dto);
-        return CreatedAtAction(nameof(GetAll), new { id }, id);
+        return CreatedAtAction(nameof(Create), new { id }, id);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserDto dto)
+    public async Task<IActionResult> Update(Guid id, UpdateUserDto dto)
     {
         await _userService.UpdateUserAsync(id, dto);
         return NoContent();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetUsers()
+    {
+    var users = await _userService.GetAllAsync();
+    return Ok(users);
     }
 
     [HttpDelete("{id}")]
@@ -36,22 +43,11 @@ public class UsersController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
-    {
-        return Ok(await _userService.GetUsersWithGroupsAsync());
-    }
-
     [HttpGet("count")]
-    public async Task<IActionResult> TotalCount()
-    {
-        return Ok(await _userService.GetTotalUserCountAsync());
-    }
+    public async Task<int> TotalCount()
+        => await _userService.GetTotalUserCountAsync();
 
     [HttpGet("count-per-group")]
-    public async Task<IActionResult> CountPerGroup()
-    {
-        return Ok(await _userService.GetUserCountPerGroupAsync());
-    }
-    
+    public async Task<Dictionary<string, int>> CountPerGroup()
+        => await _userService.GetUserCountPerGroupAsync();
 }

@@ -1,22 +1,23 @@
-using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
+
 
 [ApiController]
 [Route("api/groups")]
 public class GroupsController : ControllerBase
 {
-    private readonly IUserService _userService;
+    private readonly IGroupService _groupService;
 
-    public GroupsController(IUserService userService)
+    public GroupsController(IGroupService groupService)
     {
-        _userService = userService;
+        _groupService = groupService;
     }
 
     [HttpGet("with-users")]
     public async Task<IActionResult> GetGroupsWithUsers()
     {
-        return Ok(await _userService.GetGroupsWithUsersAsync());
+        var result = await _groupService.GetGroupsWithUsersAsync();
+        return Ok(result);
     }
 }

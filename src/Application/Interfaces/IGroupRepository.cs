@@ -14,4 +14,5 @@ public interface IGroupRepository
 
     Task SaveChangesAsync();
     Task<List<Group>> GetByIdsAsync(IEnumerable<Guid> ids);
+    Task<List<Group>> GetAllWithUsersAsync();
 }

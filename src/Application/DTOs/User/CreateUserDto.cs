@@ -4,13 +4,7 @@ namespace Application.DTOs.User;
 
 public class CreateUserDto
 {
-    [Required]
-    [MinLength(2)]
-    public string Name { get; set; } = null!;
-
-    [Required]
-    [EmailAddress]
-    public string Email { get; set; } = null!;
-
+    public string Name { get; set; } = default!;
+    public string Email { get; set; } = default!;
     public List<Guid> GroupIds { get; set; } = new();
 }

@@ -2,7 +2,16 @@ using Domain.Common;
 
 namespace Domain.Entities;
 
-public class Permission : BaseEntity
+public class Permission
 {
-    public string Name { get; set; } = null!;
+    public Guid Id { get; private set; }
+    public string Name { get; private set; } = default!;
+
+    private Permission() { }
+
+    public Permission(Guid id, string name)
+    {
+        Id = id;
+        Name = name;
+    }
 }

@@ -2,65 +2,76 @@ using Application.Common.Exceptions;
 using Application.DTOs.Group;
 using Application.DTOs.User;
 using Application.Interfaces;
+using Domain.Entities;
 
 namespace Application.Services;
 
 public class UserService : IUserService
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IGroupRepository _groupRepository;
+    private readonly IUserRepository _users;
+    private readonly IGroupRepository _groups;
 
-    public UserService(IUserRepository userRepository, IGroupRepository groupRepository)
+    public UserService(IUserRepository users, IGroupRepository groups)
     {
-        _userRepository = userRepository;
-        _groupRepository = groupRepository;
+        _users = users;
+        _groups = groups;
     }
 
-    public Task<Guid> CreateUserAsync(CreateUserDto dto)
+    public async Task<Guid> CreateUserAsync(CreateUserDto dto)
     {
-        throw new NotImplementedException();
-    }
+        var user = new User(dto.Name, dto.Email);
 
-    public Task DeleteUserAsync(Guid id)
-    {
-        throw new NotImplementedException();
-    }
+        if (dto.GroupIds.Any())
+        {
+            var groups = await _groups.GetByIdsAsync(dto.GroupIds);
+            user.SetGroups(groups);
+        }
 
-    public Task<List<GroupWithUsersDto>> GetGroupsWithUsersAsync()
-    {
-        throw new NotImplementedException();
-    }
+        await _users.AddAsync(user);
+        await _users.SaveChangesAsync();
 
-    public Task<int> GetTotalUserCountAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Dictionary<string, int>> GetUserCountPerGroupAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<List<UserWithGroupsDto>> GetUsersWithGroupsAsync()
-    {
-        throw new NotImplementedException();
+        return user.Id;
     }
 
     public async Task UpdateUserAsync(Guid id, UpdateUserDto dto)
     {
-        var user = await _userRepository.GetByIdAsync(id);
-
-        if (user == null)
-            throw new NotFoundException($"User with id '{id}' not found");
+        var user = await _users.GetByIdAsync(id)
+            ?? throw new NotFoundException("User not found");
 
         user.Update(dto.Name, dto.Email);
 
-        if (dto.GroupIds != null && dto.GroupIds.Any())
-        {
-            var groups = await _groupRepository.GetByIdsAsync(dto.GroupIds);
-            user.SetGroups(groups);
-        }
+        var groups = await _groups.GetByIdsAsync(dto.GroupIds);
+        user.SetGroups(groups);
 
-        await _userRepository.SaveChangesAsync();
+        await _users.SaveChangesAsync();
     }
+
+    public async Task DeleteUserAsync(Guid id)
+    {
+        var user = await _users.GetByIdAsync(id)
+            ?? throw new NotFoundException("User not found");
+
+        _users.Remove(user);
+        await _users.SaveChangesAsync();
+    }
+
+    public Task<int> GetTotalUserCountAsync()
+        => _users.CountAsync();
+
+    public async Task<List<UserWithGroupsDto>> GetAllAsync()
+    {
+        var users = await _users.GetAllAsync();
+
+
+        return users.Select(u => new UserWithGroupsDto
+        {
+        Id = u.Id,
+        Name = u.Name,
+        Email = u.Email,
+        Groups = u.Groups.Select(g => g.Name).ToList()
+        }).ToList();
+    }
+
+    public Task<Dictionary<string, int>> GetUserCountPerGroupAsync()
+        => _users.CountPerGroupAsync();
 }
