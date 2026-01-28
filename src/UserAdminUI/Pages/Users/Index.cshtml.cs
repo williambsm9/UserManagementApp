@@ -20,4 +20,9 @@ public class IndexModel : PageModel
     {
         Users = await _users.GetUsersAsync();
     }
+    public async Task<IActionResult> OnPostDeleteAsync(Guid id)
+    {
+        await _users.DeleteUserAsync(id);
+        return RedirectToPage();
+    }
 }
