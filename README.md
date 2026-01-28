@@ -168,6 +168,5 @@ These tests validate the API endpoints end-to-end.
 
 ## Notes
 
-This project is designed as an enterprise-style solution
-Emphasis is placed on separation of concerns, testability, and maintainability
-Suitable for technical assessments and real-world systems
+- This project is designed as an enterprise-style solution
+- Emphasis is placed on separation of concerns, testability, and maintainability
