@@ -48,7 +48,7 @@ dotnet --version
 
 git clone <repository-url>
 cd <repository-folder>
-
+```
 
 ### Running the Solution (Recommended: Visual Studio)
 
@@ -64,10 +64,10 @@ Press F5 to run the solution
 
 The following applications will start:
 
-Project	URL
-Web API	http://localhost:5001
+Project URL
+Web API http://localhost:5001
 
-Razor UI	http://localhost:5104
+Razor UI http://localhost:5104
 
 Exact ports may vary depending on your launchSettings.json.
 
@@ -75,19 +75,15 @@ Running via Command Line (Alternative - for VS Code)
 Start the Web API
 
 ```
-
 cd src/WebApi
 dotnet run
-
 ```
 
 Start the UI
 
 ```
-
 cd src/UserAdminUI
 dotnet run
-
 ```
 
 ## Application Architecture
@@ -106,7 +102,7 @@ This solution follows Clean Architecture principles:
 - Interfaces for repositories and services
 - DTOs and validation
 
-###Infrastructure
+### Infrastructure
 
 - Database access
 - Repository implementations
@@ -124,11 +120,12 @@ This solution follows Clean Architecture principles:
 - Consumes the Web API via HTTP clients
 - User and group management screens
 
-API Communication
+### API Communication
 
 The UI communicates with the API using HttpClient.
 
 Example configuration (from Program.cs in UserAdminUI):
+
 ```
 
 builder.Services.AddHttpClient<UserApiClient>(client =>
@@ -143,8 +140,10 @@ client.BaseAddress = new Uri("http://localhost:5001");
 
 ```
 
-Testing
+### Testing
+
 Run Integration Tests
+
 ```
 
 cd tests/WebApi.IntegrationTests
@@ -154,19 +153,21 @@ dotnet test
 
 These tests validate the API endpoints end-to-end.
 
-
 ## Common Issues
- API not reachable from UI
+
+### API not reachable from UI
+
         Ensure WebApi is running
         Confirm the API base URL matches the port in launchSettings.json
- Port conflicts
+
+### Port conflicts
+
         Update ports in:
             WebApi/Properties/launchSettings.json
             UserAdminUI HTTP client configuration
 
-##Notes
+## Notes
+
 This project is designed as an enterprise-style solution
 Emphasis is placed on separation of concerns, testability, and maintainability
 Suitable for technical assessments and real-world systems
-
-```
