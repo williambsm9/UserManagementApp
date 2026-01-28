@@ -28,4 +28,11 @@ public class UserApiClient
 
     public async Task DeleteUserAsync(Guid id)
         => await _http.DeleteAsync($"{ApiBase}/{id}");
+
+    public async Task<int> GetTotalUserCountAsync()
+    => await _http.GetFromJsonAsync<int>($"{ApiBase}/count");
+
+    public async Task<Dictionary<string, int>> GetUserCountPerGroupAsync()
+    => await _http.GetFromJsonAsync<Dictionary<string, int>>($"{ApiBase}/count-per-group")
+    ?? new();
 }

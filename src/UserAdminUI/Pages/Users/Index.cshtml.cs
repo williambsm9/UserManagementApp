@@ -15,6 +15,8 @@ public class IndexModel : PageModel
     }
 
     public List<UserViewModel> Users { get; set; } = new();
+    public int? TotalUserCount { get; set; }
+    public Dictionary<string, int> UsersPerGroup { get; set; } = new();
 
     public async Task OnGetAsync()
     {
@@ -24,5 +26,19 @@ public class IndexModel : PageModel
     {
         await _users.DeleteUserAsync(id);
         return RedirectToPage();
+    }
+
+    public async Task<IActionResult> OnPostTotalCountAsync()
+    {
+        TotalUserCount = await _users.GetTotalUserCountAsync();
+        await OnGetAsync();
+        return Page();
+    }
+
+    public async Task<IActionResult> OnPostCountPerGroupAsync()
+    {
+        UsersPerGroup = await _users.GetUserCountPerGroupAsync();
+        await OnGetAsync();
+        return Page();
     }
 }
