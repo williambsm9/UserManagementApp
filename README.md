@@ -15,19 +15,14 @@ This README provides **step-by-step instructions** to run the solution locally.
 
 ## Solution Structure
 
-│
-├── src
-│ ├── Application # Application layer (interfaces, DTOs, business logic)
-│ ├── Domain # Core domain entities and business rules
-│ ├── Infrastructure # Data access, repositories
-│ ├── WebApi # ASP.NET Core Web API
-│ └── UserAdminUI # ASP.NET Core Razor Pages UI
-│
-├── tests
-│ └── WebApi.IntegrationTests # API integration tests
-│
-├── UserManagement.sln
-└── README.md
+| Path                            | Description                                     |
+| ------------------------------- | ----------------------------------------------- |
+| `src/Application`               | Application layer (use cases, DTOs, interfaces) |
+| `src/Domain`                    | Core domain entities and business rules         |
+| `src/Infrastructure`            | Data access and repository implementations      |
+| `src/WebApi`                    | ASP.NET Core Web API                            |
+| `src/UserAdminUI`               | Razor Pages UI consuming the API                |
+| `tests/WebApi.IntegrationTests` | API integration tests                           |
 
 ---
 
