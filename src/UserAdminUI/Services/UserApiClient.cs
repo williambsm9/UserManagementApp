@@ -3,16 +3,16 @@ using UserAdminUI.Models;
 
 namespace UserAdminUI.Services;
 
-public class UserService
+public class UserApiClient
 {
     private readonly HttpClient _http;
 
-    public UserService(HttpClient http)
+    public UserApiClient(HttpClient http)
     {
         _http = http;
     }
 
-    private const string ApiBase = "http://localhost:5000/api/users";
+    private const string ApiBase = "http://localhost:5001/api/users";
 
     public async Task<List<UserViewModel>> GetUsersAsync()
         => await _http.GetFromJsonAsync<List<UserViewModel>>(ApiBase) ?? new();

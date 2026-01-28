@@ -20,4 +20,11 @@ public class GroupsController : ControllerBase
         var result = await _groupService.GetGroupsWithUsersAsync();
         return Ok(result);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var groups = await _groupService.GetAllAsync();
+        return Ok(groups);
+    }
 }

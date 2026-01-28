@@ -3,32 +3,36 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using UserAdminUI.Models;
 using UserAdminUI.Services;
 
-namespace UserAdminUI.Pages.Users;
-
 public class CreateModel : PageModel
 {
-    private readonly UserService _userService;
+    private readonly UserApiClient _users;
+    private readonly GroupApiClient _groups;
+
+    public CreateModel(UserApiClient users, GroupApiClient groups)
+    {
+        _users = users;
+        _groups = groups;
+    }
 
     [BindProperty]
     public UserViewModel User { get; set; } = new();
 
-    [BindProperty]
-    public string GroupIds { get; set; } = string.Empty;
+    public List<GroupViewModel> Groups { get; set; } = new();
 
-    public CreateModel(UserService userService)
+    public async Task OnGetAsync()
     {
-        _userService = userService;
+        Groups = await _groups.GetGroupsAsync();
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
-        if (!ModelState.IsValid) return Page();
+        if (!ModelState.IsValid)
+        {
+            Groups = await _groups.GetGroupsAsync();
+            return Page();
+        }
 
-        User.GroupIds = GroupIds.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                                .Select(Guid.Parse)
-                                .ToList();
-
-        await _userService.CreateUserAsync(User);
-        return RedirectToPage("./Index");
+        await _users.CreateUserAsync(User);
+        return RedirectToPage("Index");
     }
 }

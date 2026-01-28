@@ -7,22 +7,17 @@ namespace UserAdminUI.Pages.Users;
 
 public class IndexModel : PageModel
 {
-    private readonly UserService _userService;
-    public List<UserViewModel> Users { get; set; } = new();
+    private readonly UserApiClient _users;
 
-    public IndexModel(UserService userService)
+    public IndexModel(UserApiClient users)
     {
-        _userService = userService;
+        _users = users;
     }
+
+    public List<UserViewModel> Users { get; set; } = new();
 
     public async Task OnGetAsync()
     {
-        Users = await _userService.GetUsersAsync();
-    }
-
-    public async Task<IActionResult> OnPostDeleteAsync(Guid id)
-    {
-        await _userService.DeleteUserAsync(id);
-        return RedirectToPage();
+        Users = await _users.GetUsersAsync();
     }
 }

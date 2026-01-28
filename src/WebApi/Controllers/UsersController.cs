@@ -32,8 +32,24 @@ public class UsersController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetUsers()
     {
-    var users = await _userService.GetAllAsync();
-    return Ok(users);
+        var users = await _userService.GetAllAsync();
+        return Ok(users);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var user = await _userService.GetByIdAsync(id);
+        if (user == null)
+            return NotFound();
+
+        return Ok(new
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Email = user.Email,
+            GroupIds = user.Groups.Select(g => g.Id).ToList()
+        });
     }
 
     [HttpDelete("{id}")]

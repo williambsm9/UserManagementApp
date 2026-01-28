@@ -5,7 +5,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder.Services.AddHttpClient<UserService>();
+builder.Services.AddHttpClient<UserApiClient>(c =>
+{
+    c.BaseAddress = new Uri("https://localhost:5001");
+});
+
+builder.Services.AddHttpClient<GroupApiClient>(c =>
+{
+    c.BaseAddress = new Uri("https://localhost:5001");
+});
 
 var app = builder.Build();
 

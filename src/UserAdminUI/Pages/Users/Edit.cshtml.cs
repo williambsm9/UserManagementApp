@@ -7,35 +7,41 @@ namespace UserAdminUI.Pages.Users;
 
 public class EditModel : PageModel
 {
-    private readonly UserService _userService;
+    private readonly UserApiClient _users;
+    private readonly GroupApiClient _groups;
+
+    public EditModel(UserApiClient users, GroupApiClient groups)
+    {
+        _users = users;
+        _groups = groups;
+    }
 
     [BindProperty]
     public UserViewModel User { get; set; } = new();
 
-    [BindProperty]
-    public string GroupIds { get; set; } = string.Empty;
+    public List<GroupViewModel> Groups { get; set; } = new();
 
-    public EditModel(UserService userService) => _userService = userService;
-
-    public async Task OnGetAsync(Guid id)
+    public async Task<IActionResult> OnGetAsync(Guid id)
     {
-        var existing = await _userService.GetUserAsync(id);
-        if (existing != null)
-        {
-            User = existing;
-            GroupIds = string.Join(",", User.GroupIds);
-        }
+        var user = await _users.GetUserAsync(id);
+        if (user == null)
+            return NotFound();
+
+        User = user;
+        Groups = await _groups.GetGroupsAsync();
+
+        return Page();
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
-        if (!ModelState.IsValid) return Page();
+        if (!ModelState.IsValid)
+        {
+            Groups = await _groups.GetGroupsAsync();
+            return Page();
+        }
 
-        User.GroupIds = GroupIds.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                                .Select(Guid.Parse)
-                                .ToList();
-
-        await _userService.UpdateUserAsync(User);
-        return RedirectToPage("./Index");
+        await _users.UpdateUserAsync(User);
+        return RedirectToPage("Index");
     }
 }

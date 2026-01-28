@@ -23,4 +23,16 @@ public class GroupService : IGroupService
             Users = g.Users.Select(u => u.Name).ToList()
         }).ToList();
     }
+
+    public async Task<List<GroupDto>> GetAllAsync()
+    {
+        var groups = await _groupRepository.GetAllAsync();
+
+        return groups.Select(g => new GroupDto
+        {
+            Id = g.Id,
+            Name = g.Name
+        }).ToList();
+    }
+
 }

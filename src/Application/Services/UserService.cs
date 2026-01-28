@@ -1,5 +1,6 @@
 using Application.Common.Exceptions;
 using Application.DTOs.User;
+using Application.DTOs.Group;
 using Application.Interfaces;
 using Domain.Entities;
 
@@ -71,8 +72,23 @@ public class UserService : IUserService
             Id = u.Id,
             Name = u.Name,
             Email = u.Email,
-            Groups = u.Groups.Select(g => g.Name).ToList()
+            Groups = u.Groups.Select(g => new GroupDto { Id = g.Id, Name = g.Name }).ToList()
         }).ToList();
+    }
+
+    public async Task<UserWithGroupsDto> GetByIdAsync(Guid id)
+    {
+        var user = await _users.GetByIdAsync(id)
+            ?? throw new NotFoundException("User not found");
+
+
+        return new UserWithGroupsDto
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Email = user.Email,
+            Groups = user.Groups.Select(g => new GroupDto { Id = g.Id, Name = g.Name }).ToList()
+        };
     }
 
     public Task<Dictionary<string, int>> GetUserCountPerGroupAsync()

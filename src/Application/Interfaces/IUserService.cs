@@ -8,6 +8,7 @@ public interface IUserService
     Task<Guid> CreateUserAsync(CreateUserDto dto);
     Task UpdateUserAsync(Guid id, UpdateUserDto dto);
     Task<List<UserWithGroupsDto>> GetAllAsync();
+    Task<UserWithGroupsDto> GetByIdAsync(Guid id);
     Task DeleteUserAsync(Guid id);
     Task<int> GetTotalUserCountAsync();
     Task<Dictionary<string, int>> GetUserCountPerGroupAsync();

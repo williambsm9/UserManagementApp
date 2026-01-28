@@ -1,13 +1,35 @@
 @page
-@model Users.CreateModel
-<h2>Add User</h2>
+@model CreateModel
+
+<h2>Create User</h2>
 
 <form method="post">
-    <label>Name</label>
-    <input asp-for="User.Name" />
-    <label>Email</label>
-    <input asp-for="User.Email" type="email" />
-    <label>Group IDs (comma-separated)</label>
-    <input asp-for="GroupIds" />
-    <button type="submit">Add</button>
+    <div class="mb-3">
+        <label asp-for="User.Name" class="form-label"></label>
+        <input asp-for="User.Name" class="form-control" />
+        <span asp-validation-for="User.Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="User.Email" class="form-label"></label>
+        <input asp-for="User.Email" class="form-control" />
+        <span asp-validation-for="User.Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Groups</label>
+        <select asp-for="User.GroupIds"
+                asp-items="@(new MultiSelectList(Model.Groups, "Id", "Name"))"
+                multiple
+                class="form-select">
+        </select>
+        <span asp-validation-for="User.GroupIds" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
